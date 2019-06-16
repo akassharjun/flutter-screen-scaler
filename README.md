@@ -40,3 +40,7 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+### Why
+
+Imagine you have a phone with a big screen size, you develop an application using a bunch of Containers for your main page. You use hardcoded values for the height & width of the Container (Let's say 500 for the height) You run it and awesome, it fits your phone and works well! But try running it on an iPhone 5s, you are gonna be bombarded with error messages and those screen overflow warnings. You could solve this by using a SingleScrollChildView Widget but what if it affected the UI/UX design your application? That's why I wrote Flutter Screen Scalar. You give it the percentage you want a Container to take up, it will give you the height for that specific screen size.
