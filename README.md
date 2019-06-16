@@ -1,14 +1,42 @@
 # flutter_screen_scaler
 
-A new Flutter package project.
+A package to resize your widgets according to the screen size with the use of percentages.
 
-## Getting Started
+## Usage:
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+### Depend on it
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```
+dependencies:
+  flutter:
+    sdk: flutter
+  // append the line below to your dependancy list
+  flutter_screen_scaler: ^0.0.1
+```
+
+### Import it into your Dart file
+
+```
+import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
+```
+
+### Use it!
+
+```
+Widget build(BuildContext context) {
+  ScreenScaler scaler = new ScreenScaler..init(context);
+
+  return Container(
+    // take up 50% of the screen's width.
+    width: scaler.getWidth(50),
+    // take up 25% of the screen's height.
+    height: scaler.getHeight(25),
+    // the text size is calculated using the height and the width
+    child : Text("Hello There!",
+      style : TextStyle(
+        fontSize : scaler.getTextSize(20)
+      ),
+    ),
+  );
+}
+```
