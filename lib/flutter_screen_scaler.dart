@@ -4,7 +4,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 
-/// A package to resize your widgets according to the screen size with the use of percentages.
+/// A package to scale your widgets according to the screen size with the use of percentages.
 class ScreenScaler {
   static double _screenWidth = 1080.0;
   static double _screenHeight = 1920.0;
