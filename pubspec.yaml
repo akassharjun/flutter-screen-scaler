@@ -1,6 +1,6 @@
 name: flutter_screen_scaler
 description: A package to resize your widgets according to the screen size with the use of percentages.
-version: 0.0.1
+version: 1.0.0
 author: Akassharjun Shanmugarajah<akassharjun@gmail.com>
 homepage: https://github.com/akassharjun/flutter-screen-scaler
 

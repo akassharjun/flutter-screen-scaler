@@ -27,19 +27,31 @@ Widget build(BuildContext context) {
   ScreenScaler scaler = new ScreenScaler..init(context);
 
   return Container(
-    // take up 50% of the screen's width.
-    width: scaler.getWidth(50),
-    // take up 25% of the screen's height.
-    height: scaler.getHeight(25),
-    // the text size is calculated using the height and the width
-    child : Text("Hello There!",
-      style : TextStyle(
-        fontSize : scaler.getTextSize(20)
-      ),
+      color: Colors.amber,
+      child: Column(
+        children: <Widget>[
+          // to prevent overlapping with the status bar
+          Container(height: 30),
+          Container(
+            alignment: Alignment.center,
+            color: Colors.white,
+            // take 50% of the height
+            height: scaler.getHeight(50),
+            // take 50% of the height
+            width: scaler.getWidth(90),
+            child: Text(
+              "Height:50%\nWidth:90%\nFont Size:15%",
+              style: TextStyle(
+                fontSize: scaler.getTextSize(15),
+            ),
+          ),
+        )
+      ],
     ),
   );
 }
 ```
+You can find the whole code at example/example.dart
 
 ### Screenshots
 
