@@ -6,7 +6,7 @@ A package to resize your widgets according to the screen size with the use of pe
 
 ### Depend on it
 
-```
+```yaml
 dependencies:
   flutter:
     sdk: flutter
@@ -16,7 +16,7 @@ dependencies:
 
 ### Import it into your Dart file
 
-```
+```dart
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 ```
 
@@ -40,6 +40,13 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+### Screenshots
+
+![screenshot](https://github.com/akassharjun/flutter-screen-scaler/blob/master/assets/sample_image.png?raw=true)
+
+Here's the code for the above output. You can see that with the use of percentages it's much easier to
+create responsive applications.
 
 ### Why
 
