@@ -22,7 +22,7 @@ import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 
 ### Use it!
 
-```
+```dart
 Widget build(BuildContext context) {
   ScreenScaler scaler = new ScreenScaler..init(context);
 
