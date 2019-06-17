@@ -43,9 +43,11 @@ Widget build(BuildContext context) {
 
 ### Screenshots
 
-![screenshot](https://github.com/akassharjun/flutter-screen-scaler/blob/master/assets/sample_image.png?raw=true)
+![screenshot](https://github.com/akassharjun/flutter-screen-scaler/blob/master/assets/sample_image_with_container.png?raw=true)
 
 You can see that with the use of percentages it's much easier to create responsive applications.
+
+Sample application will be linked soon.
 
 ### Why
 
