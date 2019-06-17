@@ -49,6 +49,6 @@ You can see that with the use of percentages it's much easier to create responsi
 
 Sample application will be linked soon.
 
-### Why
+### Why?
 
-Imagine you have a phone with a big screen size, you develop an application using a bunch of Containers for your main page. You use hardcoded values for the height & width of the Container (Let's say 500 for the height) You run it and awesome, it fits your phone and works well! But try running it on an iPhone 5s, you are gonna be bombarded with error messages and those screen overflow warnings. You could solve this by using a SingleScrollChildView Widget but what if it affected the UI/UX design your application? That's why I wrote Flutter Screen Scalar. You give it the percentage you want a Container to take up, it will give you the height for that specific screen size.
+Imagine you have a phone with a big screen size (I own a OnePlus 6, quite big). You develop a flutter application using a bunch of Cards, Container and what not. Sometimes you'll find yourself giving them heights and widths, you try different heights to fit the perfect match for your phone. Great! Now try running this Flutter application on an iPhone 5s, you be bombarded with a ton of error messages and Screen Overflow warnings on your phone. This is where Flutter Screen Scaler comes into play, it will resize all your widgets according to the percentage you provide and the phone's screen dimension. It's pretty much just like using percentages in HTML.
