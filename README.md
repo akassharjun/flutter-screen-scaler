@@ -51,6 +51,7 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
 You can find the whole code at example/example.dart
 
 ### Screenshots
