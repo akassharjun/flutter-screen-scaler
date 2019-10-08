@@ -26,7 +26,7 @@ class ExamplePage extends StatefulWidget {
 class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
-    ScreenScaler()..init(context);
+    ScreenScaler scaler = ScreenScaler()..init(context);
 
     return Scaffold(
       body: Container(
@@ -39,13 +39,13 @@ class _ExamplePageState extends State<ExamplePage> {
               alignment: Alignment.center,
               color: Colors.white,
               // take 50% of the height
-              height: ScreenScaler.getHeight(50),
+              height: scaler.getHeight(50),
               // take 50% of the height
-              width: ScreenScaler.getWidth(90),
+              width: scaler.getWidth(90),
               child: Text(
                 "Height:50%\nWidth:90%\nFont Size:15%",
                 style: TextStyle(
-                  fontSize: ScreenScaler.getTextSize(15),
+                  fontSize: scaler.getTextSize(15),
                 ),
               ),
             )
