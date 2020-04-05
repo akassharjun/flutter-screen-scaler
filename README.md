@@ -37,7 +37,7 @@ Widget build(BuildContext context) {
             color: Colors.white,
             // take 50% of the height
             height: scaler.getHeight(50),
-            // take 50% of the height
+            // take 90% of the width
             width: scaler.getWidth(90),
             child: Text(
               "Height:50%\nWidth:90%\nFont Size:15%",
