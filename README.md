@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   // append the line below to your dependancy list
-  flutter_screen_scaler: ^0.0.1
+  flutter_screen_scaler: ^2.1.0
 ```
 
 ### Import it into your Dart file
