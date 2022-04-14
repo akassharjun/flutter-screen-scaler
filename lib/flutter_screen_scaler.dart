@@ -20,12 +20,12 @@ class ScreenScaler {
   }
 
   static double _roundToDecimals(double val, int decimalPlaces) {
-    double mod = pow(10.0, decimalPlaces);
+    num mod = pow(10.0, decimalPlaces);
     return ((val * mod).round().toDouble() / mod);
   }
 
   /// Returns the width equivalent of the [percentage] provided.
-  double getWidth(double percentage) {
+  double getWidth(double? percentage) {
     final int _decPlaces = 5;
 
     _screenWidth = _screenWidth
@@ -35,13 +35,14 @@ class ScreenScaler {
     if (_screenWidth == _fixedWidth) {
       // If input percentage matches fixedWidth then do normal scaling.
       _rsWidth =
-          _roundToDecimals((_screenWidth * (percentage / 100)), _decPlaces);
+          _roundToDecimals((_screenWidth * (percentage! / 100)), _decPlaces);
     } else {
       // If input percentage !match fixedWidth then do adjustment factor scaling.
       double _scaleRatioWidth =
           _roundToDecimals((_screenWidth / _fixedWidth), _decPlaces);
       double _scalerWidth =
-          ((percentage + log(percentage + 1)) * pow(1, _scaleRatioWidth)) / 100;
+          ((percentage! + log(percentage + 1)) * pow(1, _scaleRatioWidth)) /
+              100;
       _rsWidth = _roundToDecimals((_screenWidth * _scalerWidth), _decPlaces);
     }
 
@@ -49,7 +50,7 @@ class ScreenScaler {
   }
 
   /// Returns the height equivalent of the [percentage] provided.
-  double getHeight(double percentage) {
+  double getHeight(double? percentage) {
     final int _decPlaces = 5;
 
     _screenHeight = _screenHeight
@@ -59,13 +60,13 @@ class ScreenScaler {
     if (_screenHeight == _fixedHeight) {
       // If input percentage matches fixedHeight then do normal scaling.
       _rsHeight =
-          _roundToDecimals((_screenHeight * (percentage / 100)), _decPlaces);
+          _roundToDecimals((_screenHeight * (percentage! / 100)), _decPlaces);
     } else {
       // If input percentage !match fixedHeight then do adjustment factor scaling.
       double _scaleRatioHeight =
           _roundToDecimals((_screenHeight / _fixedHeight), _decPlaces);
       double _scalerHeight =
-          ((percentage + log(percentage + 1)) * pow(1, _scaleRatioHeight)) /
+          ((percentage! + log(percentage + 1)) * pow(1, _scaleRatioHeight)) /
               100;
       _rsHeight = _roundToDecimals((_screenHeight * _scalerHeight), _decPlaces);
     }
@@ -75,9 +76,9 @@ class ScreenScaler {
 
   /// Returns the text size for the [percentage] provided.
   double getTextSize(
-    double percentage,
+    double? percentage,
   ) =>
-      percentage / 100 * (getHeight(percentage) + getWidth(percentage));
+      percentage! / 100 * (getHeight(percentage) + getWidth(percentage));
 
   /// Returns the dynamic size for the [percentage] provided.
   double getFullScreen(

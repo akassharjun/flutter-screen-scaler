@@ -17,7 +17,7 @@ class ExampleApp extends StatelessWidget {
 }
 
 class ExamplePage extends StatefulWidget {
-  ExamplePage({Key key}) : super(key: key);
+  ExamplePage({Key? key}) : super(key: key);
 
   @override
   _ExamplePageState createState() => _ExamplePageState();
