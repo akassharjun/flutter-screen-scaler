@@ -46,7 +46,7 @@ class ScreenScaler {
       _rsWidth = _roundToDecimals((_screenWidth * _scalerWidth), _decPlaces);
     }
 
-    return _rsWidth;
+    return _screenWidth * percentage/100;
   }
 
   /// Returns the height equivalent of the [percentage] provided.
@@ -71,7 +71,7 @@ class ScreenScaler {
       _rsHeight = _roundToDecimals((_screenHeight * _scalerHeight), _decPlaces);
     }
 
-    return _rsHeight;
+    return _screenHeight * percentage/100;
   }
 
   /// Returns the text size for the [percentage] provided.
