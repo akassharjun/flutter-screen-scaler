@@ -31,7 +31,7 @@ class ExamplePage extends StatefulWidget {
 class _ExamplePageState extends State<ExamplePage> {
   @override
   Widget build(BuildContext context) {
-    ScreenScaler scaler = ScreenScaler()..init(context);
+    ScreenScaler scaler = ScreenScaler(context);
 
     return Scaffold(
       body: Container(
@@ -50,7 +50,7 @@ class _ExamplePageState extends State<ExamplePage> {
               child: Text(
                 "Height:50%\nWidth:100%\nFont Size:15%",
                 style: TextStyle(
-                  fontSize: scaler.getTextSize(15),
+                  fontSize: scaler.getTextSize(5),
                 ),
               ),
             ),
@@ -66,7 +66,7 @@ class _ExamplePageState extends State<ExamplePage> {
                   child: Text(
                     "Height:50%\nWidth:50%\nFont Size:14%",
                     style: TextStyle(
-                    fontSize: scaler.getTextSize(14),
+                    fontSize: scaler.getTextSize(4.5),
                     ),
                   ),
                 ), 
@@ -80,7 +80,7 @@ class _ExamplePageState extends State<ExamplePage> {
                   child: Text(
                     "Height:25%\nWidth:25%\nFont Size:10%",
                     style: TextStyle(
-                    fontSize: scaler.getTextSize(10),
+                    fontSize: scaler.getTextSize(3.5),
                     ),
                   ),
                 ), 
@@ -94,7 +94,7 @@ class _ExamplePageState extends State<ExamplePage> {
                   child: Text(
                     "Height:12.5%\nWidth:12.5%\nFont Size:8%",
                     style: TextStyle(
-                    fontSize: scaler.getTextSize(8),
+                    fontSize: scaler.getTextSize(3),
                     ),
                   ),
                 ), 
@@ -108,7 +108,7 @@ class _ExamplePageState extends State<ExamplePage> {
                   child: Text(
                     "Height:50%\nWidth:12.5%\nFont Size:8%",
                     style: TextStyle(
-                    fontSize: scaler.getTextSize(8),
+                    fontSize: scaler.getTextSize(3),
                     ),
                   ),
                 ), 

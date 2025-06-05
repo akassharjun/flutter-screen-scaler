@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   // append the line below to your dependancy list
-  flutter_screen_scaler: ^2.1.0
+  flutter_screen_scaler: ^3.0.0
 ```
 
 ### Import it into your Dart file
@@ -24,7 +24,7 @@ import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 
 ```dart
 Widget build(BuildContext context) {
-  ScreenScaler scaler = new ScreenScaler..init(context);
+  final ScreenScaler scaler = ScreenScaler(context);
 
   return Container(
       color: Colors.amber,
@@ -40,9 +40,9 @@ Widget build(BuildContext context) {
             // take 90% of the width
             width: scaler.getWidth(90),
             child: Text(
-              "Height:50%\nWidth:90%\nFont Size:15%",
+              "Height:50%\nWidth:90%\nFont Size:5%", // Adjusted from 15% due to getTextSize change
               style: TextStyle(
-                fontSize: scaler.getTextSize(15),
+                fontSize: scaler.getTextSize(5), // Adjusted from 15%
             ),
           ),
         )
