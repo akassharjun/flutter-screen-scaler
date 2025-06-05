@@ -5,88 +5,132 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-/// A package to scale your widgets according to the screen size with the use of percentages.
+/// A utility class to scale widget dimensions and spacing based on screen size percentages.
+///
+/// Initialize with [ScreenScaler.init(context)] before use.
+/// Provides methods to get dimensions (width, height, text size) and
+/// EdgeInsets or BorderRadius values scaled by a direct percentage of screen dimensions.
+///
+/// Also provides convenient extension methods on `num` (e.g., `50.h`, `30.w`)
+/// for concise scaling after initialization.
 class ScreenScaler {
-  double _screenWidth = 1080.0;
-  double _screenHeight = 1920.0;
+  // --- Singleton Setup ---
+  ScreenScaler._privateConstructor();
+  static final ScreenScaler I = ScreenScaler._privateConstructor();
+  // --- End Singleton Setup ---
 
-  static const double _fixedWidth = 410; // Set to an Aspect Ratio of 2:1 (h:w)
-  static const double _fixedHeight = 820; // Set to an Aspect Ratio of 2:1 (h:w)
+  double _screenWidth = 1080.0; // Default, updated by init()
+  double _screenHeight = 1920.0; // Default, updated by init()
+  bool _isInitialized = false;
 
-  void init(BuildContext context) {
-    MediaQueryData mediaQuery = MediaQuery.of(context);
-    _screenWidth = mediaQuery.size.width;
-    _screenHeight = mediaQuery.size.height;
+  /// Default number of decimal places for rounding scaled values.
+  static const int _kDefaultDecimalPlaces = 5;
+
+  /// Reference screen width for scaling text sizes using the .sp extension.
+  static const double _kReferenceScreenWidthForText = 375.0;
+
+  /// Initializes the [ScreenScaler] with actual screen dimensions from [BuildContext].
+  /// Call once before using scaling methods or extension getters like .h, .w.
+  static void init(BuildContext context) {
+    I._screenWidth = MediaQuery.sizeOf(context).width;
+    I._screenHeight = MediaQuery.sizeOf(context).height;
+    I._isInitialized = true;
   }
 
-  static double _roundToDecimals(double val, int decimalPlaces) {
+  void _checkInitialized() {
+    if (!I._isInitialized) {
+      debugPrint(
+          "Warning: ScreenScaler is not initialized. Call ScreenScaler.init(context) first. Using default screen dimensions.");
+    }
+  }
+
+  /// Rounds a [value] to a specified number of [decimalPlaces].
+  static double _roundToDecimals(double value, int decimalPlaces) {
     num mod = pow(10.0, decimalPlaces);
-    return ((val * mod).round().toDouble() / mod);
+    return ((value * mod).round().toDouble() / mod);
   }
 
-  /// Returns the width equivalent of the [percentage] provided.
-  double getWidth(double? percentage) {
-    final int _decPlaces = 5;
-
-    _screenWidth = _screenWidth
-        .floorToDouble(); // Extracts Device Screen maximum percentage.
-
-    double _rsWidth = 0;
-    if (_screenWidth == _fixedWidth) {
-      // If input percentage matches fixedWidth then do normal scaling.
-      _rsWidth =
-          _roundToDecimals((_screenWidth * (percentage! / 100)), _decPlaces);
-    } else {
-      // If input percentage !match fixedWidth then do adjustment factor scaling.
-      double _scaleRatioWidth =
-          _roundToDecimals((_screenWidth / _fixedWidth), _decPlaces);
-      double _scalerWidth =
-          ((percentage! + log(percentage + 1)) * pow(1, _scaleRatioWidth)) /
-              100;
-      _rsWidth = _roundToDecimals((_screenWidth * _scalerWidth), _decPlaces);
-    }
-
-    return _screenWidth * percentage/100;
+  /// Returns a width equivalent to the given [percentage] of the screen width.
+  ///
+  /// [percentage]: The percentage (e.g., 50 for 50%) of the screen width.
+  /// Returns the calculated width, rounded to [_kDefaultDecimalPlaces].
+  double getWidth(double percentage) {
+    _checkInitialized();
+    return _roundToDecimals(
+        (_screenWidth * (percentage / 100.0)), _kDefaultDecimalPlaces);
   }
 
-  /// Returns the height equivalent of the [percentage] provided.
-  double getHeight(double? percentage) {
-    final int _decPlaces = 5;
-
-    _screenHeight = _screenHeight
-        .floorToDouble(); // Extracts Device Screen maximum percentage.
-
-    double _rsHeight = 0;
-    if (_screenHeight == _fixedHeight) {
-      // If input percentage matches fixedHeight then do normal scaling.
-      _rsHeight =
-          _roundToDecimals((_screenHeight * (percentage! / 100)), _decPlaces);
-    } else {
-      // If input percentage !match fixedHeight then do adjustment factor scaling.
-      double _scaleRatioHeight =
-          _roundToDecimals((_screenHeight / _fixedHeight), _decPlaces);
-      double _scalerHeight =
-          ((percentage! + log(percentage + 1)) * pow(1, _scaleRatioHeight)) /
-              100;
-      _rsHeight = _roundToDecimals((_screenHeight * _scalerHeight), _decPlaces);
-    }
-
-    return _screenHeight * percentage/100;
+  /// Returns a height equivalent to the given [percentage] of the screen height.
+  ///
+  /// [percentage]: The percentage (e.g., 50 for 50%) of the screen height.
+  /// Returns the calculated height, rounded to [_kDefaultDecimalPlaces].
+  double getHeight(double percentage) {
+    _checkInitialized();
+    return _roundToDecimals(
+        (_screenHeight * (percentage / 100.0)), _kDefaultDecimalPlaces);
   }
 
-  /// Returns the text size for the [percentage] provided.
+  /// Returns a width equivalent to the given [percentage] of the [parentSize.width].
+  ///
+  /// [parentSize]: The size of the parent widget.
+  /// [percentage]: The percentage (e.g., 50 for 50%) of the parent's width.
+  /// Returns the calculated width, rounded to [_kDefaultDecimalPlaces].
+  double scaleWidthFrom(Size parentSize, double percentage) {
+    // No _checkInitialized needed here as it doesn't use screen dimensions
+    return _roundToDecimals(
+        (parentSize.width * (percentage / 100.0)), _kDefaultDecimalPlaces);
+  }
+
+  /// Returns a height equivalent to the given [percentage] of the [parentSize.height].
+  ///
+  /// [parentSize]: The size of the parent widget.
+  /// [percentage]: The percentage (e.g., 50 for 50%) of the parent's height.
+  /// Returns the calculated height, rounded to [_kDefaultDecimalPlaces].
+  double scaleHeightFrom(Size parentSize, double percentage) {
+    // No _checkInitialized needed here as it doesn't use screen dimensions
+    return _roundToDecimals(
+        (parentSize.height * (percentage / 100.0)), _kDefaultDecimalPlaces);
+  }
+
+  /// Returns a responsive font size scaled linearly based on the screen width
+  /// relative to [_kReferenceScreenWidthForText].
+  ///
+  /// [fontSize]: The base font size to scale.
+  /// Returns the calculated font size, rounded to [_kDefaultDecimalPlaces].
+  double getResponsiveFontSize(double fontSize) {
+    _checkInitialized();
+    double scaleFactor = _screenWidth / _kReferenceScreenWidthForText;
+    // Optional: Add min/max clamps for the scaleFactor if desired
+    // e.g., scaleFactor = scaleFactor.clamp(0.8, 1.5);
+    return _roundToDecimals(fontSize * scaleFactor, _kDefaultDecimalPlaces);
+  }
+
+  /// Returns a scaled text size. This is an alias for [getFullScreen].
+  /// Consider using [getResponsiveFontSize] or the `.sp` extension for more standard font scaling.
   double getTextSize(
-    double? percentage,
-  ) =>
-      percentage! / 100 * (getHeight(percentage) + getWidth(percentage));
-
-  /// Returns the dynamic size for the [percentage] provided.
-  double getFullScreen(
     double percentage,
   ) =>
-      percentage / 100 * (getHeight(percentage) + getWidth(percentage));
+      getFullScreen(percentage);
 
-  /// Returns the dynamic padding sizes for the [height] and [width] percentages provided.
+  /// Returns a dynamic scaled size based on a formula involving the sum of
+  /// scaled screen width and height: `(percentage/100)^2 * (screenWidth + screenHeight)`.
+  ///
+  /// Note: The percentage is squared in this formula.
+  /// Useful for sizes proportional to both screen dimensions.
+  ///
+  /// [percentage]: The percentage to use in the scaling formula.
+  double getFullScreen(
+    double percentage,
+  ) {
+    _checkInitialized();
+    // With simplified getWidth/getHeight, this becomes:
+    // (percentage / 100) * (screenWidth * p/100 + screenHeight * p/100)
+    // = (percentage / 100)^2 * (screenWidth + screenHeight)
+    return (percentage / 100) * (getHeight(percentage) + getWidth(percentage));
+  }
+
+  /// Returns [EdgeInsets] scaled by [height] and [width] percentages.
+  /// L/R use `getWidth(width)`, T/B use `getHeight(height)`.
   EdgeInsetsGeometry getPadding(
     double height,
     double width,
@@ -98,29 +142,19 @@ class ScreenScaler {
         getHeight(height),
       );
 
-  /// Returns the dynamic padding sizes for the [height] percentage provided.
+  /// Returns [EdgeInsets] with all sides scaled by [height] percentage.
   EdgeInsetsGeometry getPaddingByHeight(
     double height,
   ) =>
-      EdgeInsets.fromLTRB(
-        getHeight(height),
-        getHeight(height),
-        getHeight(height),
-        getHeight(height),
-      );
+      EdgeInsets.all(getHeight(height));
 
-  /// Returns the dynamic padding sizes for the [width] percentage provided.
+  /// Returns [EdgeInsets] with all sides scaled by [width] percentage.
   EdgeInsetsGeometry getPaddingByWidth(
     double width,
   ) =>
-      EdgeInsets.fromLTRB(
-        getHeight(width),
-        getHeight(width),
-        getHeight(width),
-        getHeight(width),
-      );
+      EdgeInsets.all(getWidth(width));
 
-  /// Returns the dynamic padding size for the [left], [top], [right], [bottom] percentages provided.
+  /// Returns [EdgeInsets] with L/T/R/B paddings scaled by respective percentages.
   EdgeInsetsGeometry getPaddingLTRB(
     double left,
     double top,
@@ -134,11 +168,12 @@ class ScreenScaler {
         getHeight(bottom),
       );
 
-  /// Returns the dynamic padding size for the [percentage] provided.
+  /// Returns [EdgeInsets] with all sides scaled using [getFullScreen] logic.
   EdgeInsetsGeometry getPaddingAll(double all) =>
       EdgeInsets.all(getFullScreen(all));
 
-  /// Returns the dynamic margin size for the [height] and [width] percentages provided.
+  /// Returns [EdgeInsets] for margins, scaled by [height] and [width] percentages.
+  /// L/R use `getWidth(width)`, T/B use `getHeight(height)`.
   EdgeInsetsGeometry getMargin(
     double height,
     double width,
@@ -150,29 +185,19 @@ class ScreenScaler {
         getHeight(height),
       );
 
-  /// Returns the dynamic margin size for the [height] percentage provided.
+  /// Returns [EdgeInsets] for margins with all sides scaled by [height] percentage.
   EdgeInsetsGeometry getMarginByHeight(
     double height,
   ) =>
-      EdgeInsets.fromLTRB(
-        getHeight(height),
-        getHeight(height),
-        getHeight(height),
-        getHeight(height),
-      );
+      EdgeInsets.all(getHeight(height));
 
-  /// Returns the dynamic margin size for the [width] percentage provided.
+  /// Returns [EdgeInsets] for margins with all sides scaled by [width] percentage.
   EdgeInsetsGeometry getMarginByWidth(
     double width,
   ) =>
-      EdgeInsets.fromLTRB(
-        getHeight(width),
-        getHeight(width),
-        getHeight(width),
-        getHeight(width),
-      );
+      EdgeInsets.all(getWidth(width));
 
-  /// Returns the dynamic margin sizes for the [left], [top], [right], [bottom] percentages provided.
+  /// Returns [EdgeInsets] for margins with L/T/R/B scaled by respective percentages.
   EdgeInsetsGeometry getMarginLTRB(
     double left,
     double top,
@@ -186,19 +211,19 @@ class ScreenScaler {
         getHeight(bottom),
       );
 
-  /// Returns the dynamic margin size for the [percentage] provided.
+  /// Returns [EdgeInsets] for margins with all sides scaled using [getFullScreen] logic.
   EdgeInsetsGeometry getMarginAll(
     double percentage,
   ) =>
       EdgeInsets.all(getFullScreen(percentage));
 
-  /// Returns the dynamic border radius size for the [radius] percentage provided.
+  /// Returns [BorderRadius] with circular radius scaled using [getFullScreen] logic.
   BorderRadius getBorderRadiusCircular(
     double radius,
   ) =>
       BorderRadius.circular(getFullScreen(radius));
 
-  /// Returns the dynamic border radius size for the [topLeft], [topRigt], [bottomLeft] & [bottomRight] percentages provided.
+  /// Returns [BorderRadius] with individually scaled corners using [getFullScreen] logic.
   BorderRadius getBorderRadiusCircularLR(
     double topLeft,
     double topRight,
@@ -206,13 +231,13 @@ class ScreenScaler {
     double bottomRight,
   ) =>
       BorderRadius.only(
-        topLeft: Radius.circular(topLeft),
-        topRight: Radius.circular(topRight),
-        bottomLeft: Radius.circular(bottomLeft),
-        bottomRight: Radius.circular(bottomRight),
+        topLeft: Radius.circular(getFullScreen(topLeft)),
+        topRight: Radius.circular(getFullScreen(topRight)),
+        bottomLeft: Radius.circular(getFullScreen(bottomLeft)),
+        bottomRight: Radius.circular(getFullScreen(bottomRight)),
       );
 
-  /// Returns the dynamic border radius size for the [radius] height percentage provided.
+  /// Returns [BorderRadius] with circular radius scaled by [getHeight].
   BorderRadius getBorderRadiusCircularByHeight(
     double radius,
   ) =>
@@ -220,11 +245,27 @@ class ScreenScaler {
         getHeight(radius),
       );
 
-  /// Returns the dynamic border radius size for the [radius] width percentage provided.
+  /// Returns [BorderRadius] with circular radius scaled by [getWidth].
   BorderRadius getBorderRadiusCircularByWidth(
     double radius,
   ) =>
       BorderRadius.circular(
-        getHeight(radius),
+        getWidth(radius),
       );
+}
+
+// --- Extension Methods ---
+extension ScreenScalerExtensions on num {
+  /// Returns a height equivalent to this [num] value as a percentage of the screen height.
+  /// ScreenScaler must be initialized using `ScreenScaler.init(context)` before using this.
+  double get h => ScreenScaler.I.getHeight(toDouble());
+
+  /// Returns a width equivalent to this [num] value as a percentage of the screen width.
+  /// ScreenScaler must be initialized using `ScreenScaler.init(context)` before using this.
+  double get w => ScreenScaler.I.getWidth(toDouble());
+
+  /// Returns a font size scaled linearly based on screen width.
+  /// ScreenScaler must be initialized using `ScreenScaler.init(context)` before using this.
+  /// See [ScreenScaler.getResponsiveFontSize].
+  double get sp => ScreenScaler.I.getResponsiveFontSize(toDouble());
 }
