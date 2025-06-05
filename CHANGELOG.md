@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] - YYYY-MM-DD
+## [3.0.0] - 05/06/2025
 
 ### Breaking Changes
 - **Refactored `ScreenScaler` to use a singleton pattern.**
